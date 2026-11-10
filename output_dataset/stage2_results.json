@@ -1,0 +1,27 @@
+[
+  {
+    "instruction": "Identify the main real-world problem described in the following paragraph and explain its significance.",
+    "input": "Climate change is causing more frequent and severe heatwaves in urban areas. The urban heat island effect, where cities are significantly warmer than surrounding rural areas due to concrete and asphalt absorbing heat, exacerbates the problem. This leads to increased energy consumption for cooling, higher levels of air pollution, and heat-related health issues, particularly among vulnerable populations such as the elderly and low-income communities.",
+    "output": "The main real-world problem is the increased frequency and severity of heatwaves in urban areas due to climate change and the urban heat island effect. This is significant because it leads to higher energy consumption, air pollution, and health risks for vulnerable groups like the elderly and low-income communities."
+  },
+  {
+    "instruction": "Classify the following paragraph as describing either a technological, environmental, or social problem. Provide a brief justification for your classification.",
+    "input": "The rapid proliferation of deepfake technology poses a significant threat to democratic processes. Malicious actors can create convincing fake videos of political leaders saying or doing things they never did, which can spread misinformation and erode public trust in elections and institutions. This undermines the integrity of democratic discourse and can lead to social unrest.",
+    "output": "Classification: Technological problem (with social implications). Justification: The paragraph primarily discusses deepfake technology, a technological advancement, and its negative consequences on democratic processes and public trust, which are social issues. However, the root cause is technological, so it is classified as a technological problem."
+  },
+  {
+    "instruction": "Extract the key problem, its causes, and its effects from the following paragraph. Present your answer in a structured format.",
+    "input": "Antibiotic resistance is a growing global health crisis. It occurs when bacteria evolve to withstand the drugs designed to kill them, often due to overuse and misuse of antibiotics in human medicine and agriculture. As a result, common infections become harder to treat, leading to longer hospital stays, higher medical costs, and increased mortality. Without effective antibiotics, routine surgeries and medical procedures become life-threatening.",
+    "output": "Key problem: Antibiotic resistance.\nCauses: Overuse and misuse of antibiotics in human medicine and agriculture.\nEffects: Common infections become harder to treat, longer hospital stays, higher medical costs, increased mortality, and routine medical procedures become life-threatening."
+  },
+  {
+    "instruction": "Based on the paragraph, infer one potential long-term consequence of the problem if no action is taken. Explain your reasoning.",
+    "input": "Plastic pollution in the oceans is accumulating at an alarming rate. Microplastics are now found in the food chain, affecting marine life and potentially human health. If current trends continue, by 2050 there could be more plastic than fish in the ocean by weight. This could lead to widespread ecological collapse and severe economic impacts on fisheries and tourism.",
+    "output": "One potential long-term consequence is the collapse of marine ecosystems, leading to food shortages and economic instability. Reasoning: The paragraph states that plastic pollution could result in more plastic than fish by 2050, causing ecological collapse. This would disrupt the food chain, affecting fisheries and tourism, which are vital economic sectors for many coastal communities."
+  },
+  {
+    "instruction": "Summarize the real-world problem described in the paragraph in one sentence, and then propose a potential solution.",
+    "input": "The digital divide refers to the gap between those who have access to modern information and communication technology, such as the internet and computers, and those who do not. This gap is particularly pronounced in rural and low-income areas, where infrastructure is lacking and affordability is a barrier. As a result, individuals in these areas are disadvantaged in terms of education, employment opportunities, and access to government services.",
+    "output": "Summary: The digital divide is the unequal access to information and communication technology, which disadvantages rural and low-income populations in education, employment, and government services.\nProposed solution: Governments and private sectors should invest in broadband infrastructure in underserved areas and provide subsidies for affordable devices and internet access to bridge the gap."
+  }
+]
