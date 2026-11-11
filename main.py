@@ -35,6 +35,7 @@ from data.storage import (
     save_stage2_results,
     save_stage3_final_report,
 )
+from memory.faiss_manager import MemoryManager
 from agents import (
     ExtractorAgent,
     CheckerAgent,
@@ -148,6 +149,7 @@ def stage2_training() -> List[Dict[str, Any]]:
     reflector = ReflectorAgent()
 
     feedback_history: List[str] = []
+    reflections: List[Dict[str, Any]] = []
     best_instances: List[Dict[str, Any]] = []
     best_score: float = -1.0
     final_verdict: str = "fail"
@@ -182,11 +184,29 @@ def stage2_training() -> List[Dict[str, Any]]:
         if round_no < config.MAX_STAGE2_ROUNDS:
             reflection = reflector.run({"instances": instances, "reason": reason})
             feedback_history.append(reflection["feedback"])
+            reflections.append(
+                {
+                    "round": round_no,
+                    "reason": reason,
+                    "feedback": reflection["feedback"],
+                }
+            )
             print("    reflected; feeding feedback back to Generator.")
 
-    out_path = save_stage2_results(best_instances)
+    stage2_data = {"instances": best_instances, "reflections": reflections}
+    out_path = save_stage2_results(stage2_data)
     print(f"\nStage 2 complete: {len(best_instances)} instances saved to {out_path}")
     print(f"Best score={best_score:.1f}  verdict={final_verdict}")
+
+    # Reflector output is now persisted -> update the FAISS long-term memory.
+    if config.ENABLE_MEMORY:
+        try:
+            memory = MemoryManager()
+            n_chunks = memory.build_or_update_index()
+            print(f"FAISS memory updated: {n_chunks} chunks indexed.")
+        except Exception as exc:  # noqa: BLE001 — memory is additive, don't kill the run
+            print(f"WARNING: FAISS memory update failed: {exc}")
+
     return best_instances
 
 
@@ -197,7 +217,7 @@ def stage3_inference() -> Dict[str, Any]:
     """Integrator reads Stage 1 + Stage 2 results and produces the report."""
     print("\n=== Stage 3: Inference ===")
     stage1_records = load_stage1_results()
-    stage2_instances = load_stage2_results()
+    stage2_instances = load_stage2_results()["instances"]
     conclusions = [rec["final_conclusion"] for rec in stage1_records]
     print(
         f"Loaded {len(conclusions)} conclusions and {len(stage2_instances)} instances."

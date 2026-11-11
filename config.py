@@ -16,9 +16,14 @@ LLM_MODEL: str = os.getenv("MODEL", "gpt-4o-mini")
 LLM_API_KEY: str | None = os.getenv("API_KEY")
 LLM_BASE_URL: str | None = os.getenv("BASE_URL")
 
-# --- Vector store --------------------------------------------------------
+# --- Vector store / long-term memory ------------------------------------
+# Dimension is auto-detected from the embedding model; kept for reference.
 FAISS_DIMENSION: int = 768
-FAISS_INDEX_PATH: str | None = None
+FAISS_INDEX_PATH: str = "data/reflector_memory.index"
+FAISS_METADATA_PATH: str = "data/reflector_memory_metadata.json"
+
+# Embedding model used to vectorize memory chunks (sentence-transformers).
+EMBEDDING_MODEL: str = os.getenv("EMBEDDING_MODEL", "all-MiniLM-L6-v2")
 
 # --- Stage 1 Extractor <-> Checker game loop -----------------------------
 MAX_REFINE_ROUNDS: int = 3     # max correction rounds per paragraph (n=3)
@@ -31,6 +36,11 @@ MAX_PARAGRAPHS_PER_PAPER: int = None  # process at most this many paragraphs per
 # --- Stage 2 Generator <-> Evaluator game loop ---------------------------
 MAX_STAGE2_ROUNDS: int = 3
 STAGE2_SCORE_THRESHOLD: float = 8.0
+
+# --- Stage 3 Filter (topic feasibility / long-term memory) ---------------
+FILTER_TOP_K: int = 3
+FILTER_MIN_SCORE: float = 0.0   # cosine-similarity threshold for "relevant"
+ENABLE_MEMORY: bool = True      # build/update the FAISS index during the pipeline
 
 # --- Persistence ---------------------------------------------------------
 OUTPUT_DIR: str = "output_dataset"

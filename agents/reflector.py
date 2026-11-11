@@ -11,6 +11,10 @@ Input JSON::
 Output JSON::
 
     {"feedback": "..."}
+
+The feedback is collected by ``main.stage2_training`` into
+``stage2_results.json["reflections"]`` and triggers a FAISS long-term memory
+update via ``memory.faiss_manager.MemoryManager``.
 """
 from __future__ import annotations
 

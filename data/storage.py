@@ -61,23 +61,38 @@ def load_stage1_results(
 
 
 def save_stage2_results(
-    instances: List[Dict[str, Any]],
+    stage2_data: Dict[str, Any],
     output_path: Optional[Union[str, Path]] = None,
 ) -> Path:
-    """Write the winning Stage 2 instances to JSON (auto-creates the directory)."""
+    """Write the Stage 2 result object (``instances`` + ``reflections``) to JSON."""
     return _write_json(
-        instances,
+        stage2_data,
         _resolve(output_path, Path(config.OUTPUT_DIR) / config.STAGE2_RESULTS_FILE),
     )
 
 
 def load_stage2_results(
     input_path: Optional[Union[str, Path]] = None,
-) -> List[Dict[str, Any]]:
-    """Read the Stage 2 instances from disk (used as Stage 3 input)."""
-    return _read_list(
-        _resolve(input_path, Path(config.OUTPUT_DIR) / config.STAGE2_RESULTS_FILE)
-    )
+) -> Dict[str, Any]:
+    """Read Stage 2 results as ``{"instances": [...], "reflections": [...]}``.
+
+    Backward-compatible with the legacy format (a bare list of instances).
+    """
+    path = _resolve(input_path, Path(config.OUTPUT_DIR) / config.STAGE2_RESULTS_FILE)
+    if not path.exists():
+        raise FileNotFoundError(
+            f"File not found at {path}. Run the earlier stage first (python main.py)."
+        )
+    data = json.loads(path.read_text(encoding="utf-8"))
+    if isinstance(data, list):
+        return {"instances": data, "reflections": []}
+    if not isinstance(data, dict):
+        raise ValueError(
+            f"Expected a JSON object or list at {path}, got {type(data).__name__}."
+        )
+    data.setdefault("instances", [])
+    data.setdefault("reflections", [])
+    return data
 
 
 def save_stage3_final_report(
